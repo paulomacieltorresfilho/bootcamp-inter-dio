@@ -1,5 +1,4 @@
-# Desafio de Projeto sobre Git/GitHub da DIO
-Repositório criado para o desafio de projeto.
-
-## Links úteis
-[Sintaxe Básica Markdown](https://www.markdownguide.org/)
+# DIO - BootCamp Inter
+Repositório criado para colocar anotações e códigos dos cursos do Bootcamp Inter Frontend Developer
+---
+[Bootcamp Inter](https://web.dio.me/track/inter-frontend-developer?tab=path)
