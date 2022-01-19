@@ -1,15 +1,11 @@
-const botao = document.getElementById('botao')
+const botao = document.getElementById('botao');
+const text = document.getElementsByTagName('p')[0];
 const elements = document.querySelectorAll('.mode');
 
 botao.addEventListener('click', () => {
     elements.forEach((item) => {
         item.classList.toggle('dark-mode');
-
-        if (item.tagName === 'BUTTON') {
-            if (item.innerHTML === 'Light Mode'){
-                item.innerHTML = 'Dark Mode';
-            } else {item.innerHTML = 'Light Mode'};
-        }
-
     })
+    botao.innerHTML = botao.innerHTML.includes('Light') ? 'Dark Mode': 'Light Mode';
+    text.innerHTML = text.innerHTML.includes('Light') ? 'Dark Mode ON': 'Light Mode ON';
 })
