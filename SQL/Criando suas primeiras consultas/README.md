@@ -156,6 +156,12 @@ select * from Pessoas where ltrim(rtrim(Nome))='Paulo'
 - AND
 - OR
 
+# Índices
+Forma de procurar dados de forma mais eficiente
+``` SQL
+CREATE INDEX IDX01_PRODUTOS_EAN ON PRODUTOS(EAN)
+```
+
 # Normalizando dados
 ## Chaves primária e estrangeira
 ### Chave primária
@@ -283,3 +289,4 @@ on      ped.codigocliente = cli.codigo
 group   by cli.codigo,
         cli.nome
 ```
+
