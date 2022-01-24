@@ -137,6 +137,21 @@ from	pedidoitem
 
 ```
 
+### Exemplo Like
+```SQL
+select * from Pessoas where Nome like '%Vader'
+-- João Vader, Darth Vader, JJJJVader, Vader
+
+select * from Pessoas where Nome like 'Darth%'
+--- Darthinho, Darth Vader, Darth
+```
+
+### Exemplo ltrim, rtrim
+``` SQL
+select * from Pessoas where ltrim(rtrim(Nome))='Paulo'
+-- '   Paulo' 'Paulo   ' '   Paulo   '
+```
+
 ## Operadores lógicos
 - AND
 - OR
