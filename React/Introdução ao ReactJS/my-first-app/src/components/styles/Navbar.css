@@ -1,0 +1,23 @@
+header {
+    height: 68px;
+    background-color: whitesmoke;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 100px;
+}
+
+.container {
+    margin-left: 60px;
+}
+
+header nav a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    margin-right: 24px;
+}
+
+header nav a:hover {
+    color: #666;
+}
