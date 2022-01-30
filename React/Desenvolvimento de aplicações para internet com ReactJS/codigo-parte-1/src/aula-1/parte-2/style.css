@@ -1,0 +1,26 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 600px;
+    gap: 8px;
+}
+form.sorvete, form.file{
+    border-top: 1px solid white;
+    padding-top: 8px;
+}
+
+input[type="text"], select {
+    margin-left: 8px;
+}
+
+input[type="submit"] {
+    width: 75px;
+}

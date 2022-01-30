@@ -137,3 +137,100 @@ module.exports = {
     ]
 }
 ```
+---
+# ESLint
+Configuração
+```bash
+npm install --save-dev eslint babel-eslint eslint-plugin-react eslint-watch
+```
+
+### .eslintrc
+Onde todas as regras de boas práticas são colocadas
+
+Para rodar o eslint em todos os arquivos js, basta rodar o comando `eslint ./diretorio/*.js`. Também é possível colocar no package.json como script `scripts: {"eslint": "eslint ./src/*.js"}`
+
+---
+---
+---
+# Conceitos aplicados aos tipos de dados e condições da biblioteca
+
+## Renderização Condicional
+Em React, você pode criar componentes distintos que encapsulam o comportamento que você precisa. Então, você pode renderizar apenas alguns dos elementos, dependendo do estado da sua aplicação
+
+- Variáveis de elementos
+- If inline com o operador lógico &&
+- If-else inline com operador condicional
+- Evitando que um componente seja renderizado
+
+Ex.
+``` JSX
+<div>
+    <h1>Minha página</h1>
+    {hasCustomer && (
+            <Button text={"clique aqui para visualizar o histórico"} onClick={getHistorico()}/>
+    )}
+</div>
+```
+---
+``` JSX
+<div>
+    <h1>Minha página</h1>
+    {hasCustomer ? (
+        <Button text={"clique aqui para visualizar o histórico"} onClick={getHistorico()}/>
+    ) : (
+        <Button text={"clique aqui para cadastrar um cliente" onClick={cadastrarCliente()}}/>
+    )}
+</div>
+```
+
+## Listas e chaves
+- Renderizando múltiplos componentes
+- Componente de lista básico
+- Chaves
+- Extraindo componentes com chaves
+- Chaves devem ser únicas apenas entre elementos irmãos
+
+Ex.
+```JSX
+function renderCustomer(customer, index) {
+    return (
+        <li key={`customer-${customer.id}`}>{customer.name}</li>
+    )
+}
+
+<div>
+    Clientes
+    <ul>
+        {listCustomers.map(renderCustomer)}
+    </ul>
+</div>
+```
+
+## Manipulando Eventos
+
+Manipular eventos em elementos React é muito semelhante a manipular eventos em elementos do DOM. Existem algumas diferenças sintáticas:
+- Eventos em React são nomeados usando camelCase ao invés de letras minúsculas
+- Com o JSX você passa uma função como manipulador de eventos ao invés de um texto
+
+[Documentação](https://pt-br.reactjs.org/docs/handling-events.html)
+
+- Eventos
+- Passando argumentos para manipuladores de eventos
+
+Ex.
+``` JSX
+const showEvent = (e) => {
+    console.log('Evento clicado');
+    console.log(e);
+}
+
+const button = <button onClick={showEvent}>Clique aqui!</button>
+```
+
+# Pensando do jeito React
+- Comece com um Mock
+- Separe a UI em uma hierarquia de componentes
+- Crie uma versão estática em react
+- Identifique a representação mínima (mas completa) do state da UI
+- Identifique onde o state deve ficar
+- Adicione o fluxo de dados inverso
