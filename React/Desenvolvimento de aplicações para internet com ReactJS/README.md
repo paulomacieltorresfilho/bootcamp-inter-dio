@@ -181,3 +181,64 @@ Em React, adiciona na camada de View 3 novos conceitos para conectar a View à S
 npm install react-redux
 npm install --save-dev redux-devtools
 ```
+
+# Comunicação avançada entre aplicações
+
+## Rest HTTP com React
+### APIs HTTP
+- Servem para conectar a um ou mais servidores HTTP
+    - GET
+    - POST
+    - DELETE
+    - PUT / PATCH
+- Fetch API
+- Axios
+
+### Fetch API
+- Nativa do browser
+- Oferece um alternativa ao XMLHttpRequest() e jQuery.ajax()
+- Suporte a Service Workers
+- Algumas diferenças:
+    - Não envia nem recebe cookies (precisa definir a opção credentials)
+    - Não rejeita o status do erro HTTP
+
+- GET
+```JS
+fetch('https://react-intermediario-dio.free.beeceptor.com/cientistas-brasileiras')
+    .then(response => response.json())
+    .then(data => {
+        alert(`Conheça algumas cientistas brasileiras: ${data}`);
+    })
+    .catch(error => {
+        alert('Ops! erro a seguir: ' + error);
+    });
+```
+- POST
+```JS
+const novaCientista = {nome: 'Fulana de Tal', area: 'Letras'};
+fetch('https://react-intermediario-dio.free.beeceptor.com/cientistas-brasileiras', {
+    method: 'post',
+    body: JSON.stringify(novaCientista)
+})
+    .then(response => response.json())
+    .then(data => {
+        alert(`Conheça algumas cientistas brasileiras: ${data}`);
+    })
+    .catch(error => {
+        alert('Ops! erro a seguir: ' + error);
+    });
+```
+- DELETE 
+```JS
+let index = 4;
+fetch(`https://react-intermediario-dio.free.beeceptor.com/cientistas-brasileiras/${index}`, {
+    method: 'delete'
+})
+    .then(response => response.json())
+    .then(data => {
+        alert(`Conheça algumas cientistas brasileiras: ${data}`);
+    })
+    .catch(err => {
+        alert('Opa! erro a seguir: ' + err);
+    });
+```
