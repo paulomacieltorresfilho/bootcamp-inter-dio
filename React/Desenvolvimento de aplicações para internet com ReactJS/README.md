@@ -242,3 +242,167 @@ fetch(`https://react-intermediario-dio.free.beeceptor.com/cientistas-brasileiras
         alert('Opa! erro a seguir: ' + err);
     });
 ```
+- PUT
+```JS
+let index = 3;
+const novaCientista = {nome: 'Carla', area: 'Física'}
+fetch(`https://react-intermediario-dio.free.beeceptor.com/cientistas-brasileiras/${index}`, {
+    method: 'put',
+    body: JSON.stringify(novaCientista)
+})
+    .catch(err => {
+        alert('Ops! deu erro: ' + err);
+    });
+```
+
+### Axios
+- Lib de HTTP API
+- Cross-browser
+- Pode monitorar o progresso de um request
+- Melhor tratamento de erros
+- Melhor teste
+- Instalação: `yarn add axios`
+
+- GET
+```JS
+import axios from 'axios';
+
+axios.get('https://react-intermediario-dio.free.beeceptor.com/cientistas-brasileiras')
+    .then(data =>{
+        alert(`Conheça algumas cientistas brasileiras: ${data}`);
+    })
+    .catch(err => {
+        alert('Ops! Erro: ' + err);
+    });
+```
+- POST
+```JS
+axios.post('https://react-intermediario-dio.free.beeceptor.com/cientistas-brasileiras', {
+    nome: 'Fulana de Tal',
+    area: 'Letras'
+})
+    .catch(err => {
+        alert(err);
+    })
+```
+- DELETE
+```JS
+let index = 3;
+axios.delete(`https://react-intermediario-dio.free.beeceptor.com/cientistas-brasileiras/${index}`)
+    .catch(err =>{
+        alert(err);
+    });
+```
+- PUT
+```JS
+let index = 3;
+axios.put(`https://react-intermediario-dio.free.beeceptor.com/cientistas-brasileiras/${index}`, {
+    nome: 'Carla',
+    area: 'Física'
+})
+    .catch(err => {
+        alert(err);
+    });
+```
+
+## Imutabilidade e Redux
+
+### Imutabilidade
+- Uma vez criada, não pode ser alterada
+- Novas coleções podem ser criadas a partir de uma coleção anterior e uma mutação (setter) como um conjunto
+- Novas coleções são criadas usando o máximo possível da estrutura original, reduzindo a cópia e aumentando a performance
+
+#### Benefícios
+- Performance
+- Programação mais simples
+- Debugging mais simples (detecção de mudanças)
+
+#### Imutabilidade e React
+Se você quer performance em React, use dados imutáveis. Você consegue usando o shouldComponentUpdate ou React.PureComponent
+
+![](./readme-imgs/SCU.png)
+
+Com shouldComponentUpdate
+```JS
+class CounterButton extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {count: 1};
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.props.color !== nextProps.color) {
+            return true;
+        }
+        if (this.state.count !== nextState.count) {
+            return true;
+        }
+        return false;
+    }
+
+    render() {
+        return (
+            <button 
+            color={this.props.color}
+            onClick={() => this.setState(state => ({count: this.state.count + 1}))}>
+            Count: {this.state.count}
+            </button>
+        )
+    }
+}
+```
+Com React.PureComponent
+```JS
+class CounterButton extends React.PureComponent {
+    constructor(props) {
+        super(props);
+        this.state = {count: 1};
+    }
+
+    render() {
+        return (
+            <button
+            color={this.props.color}
+            onClick={() => this.setState(state => ({count: state.count + 1}))}>
+            Count: {this.state.count}
+            </button>
+        )
+    }
+}
+```
+---
+
+Exemplo de PureComponent não funcionando corretamente
+```JS
+class ListOfWords extends React.PureComponent {
+    render() {
+        return <div>{this.props.words.join(',')}</div>
+    }
+}
+
+class WordAdder extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            words: ['marklar']
+        };
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick() {
+        // Essa parte é um padrão ruim e causa um bug
+        const words = this.state.words;
+        words.push('marklar');
+        this.setState({words: words});
+    }
+
+    render() {
+        return (
+            <div>
+                <button onClick={this.handleClick} />
+                <ListOfWords words={this.state.words} />
+            </div>
+        )
+    }
+}
+```
