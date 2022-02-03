@@ -406,3 +406,153 @@ class WordAdder extends React.Component {
     }
 }
 ```
+- Problema:
+    - O PureComponent vai fazer uma comparação rasa entre os valores antigos e novos de this.props.words
+    - O código muda words no handleClick do WordAdder mas, mesmo mudando as palavras, elas serãp consideradas como iguais
+- Solução 1: Evitar mutar valores ou estado
+```JS
+handleClick() {
+    this.setState(state => ({
+        words: [...state.words, 'marklar'],
+    }));
+};
+```
+- Solução 2: Immutable.js
+    - Biblioteca que fornece coleções persistentes e imutáveis
+    - Permite detecção barata de alterações nos objetos
+    ---
+    - Considere o seguinte trecho de código:
+    ```JS
+    const x = {foo: 'bar'};
+    const y = x;
+    y.foo = 'baz';
+    x === y; // true
+    x.foo; // baz
+    ```
+    - O trecho poderia ser reescrito:
+    ```JS
+    const SomeRecord = Immutable.Record({foo: null});
+    const x = new SomeRecord({foo: 'bar'});
+    const y = x.set('foo', 'baz');
+    const z = x.set('foo', 'bar');
+    x === y // false
+    x === z // true
+    ```
+- Outras libs:
+    - Immer
+    - Immutability-helper
+    - Seamless-immutable
+
+
+#### Imutabilidade e Redux
+- Imutabilidade é pré-requisito no Redux
+    - Redux e React-Redux utilizam comparações razas
+    - Manipulação de dados mais segura
+    - Time-travel debbuging
+---
+
+- Os reducers dividem o objeto de estados em domínios por uma chave
+- combineReducers checa mudanças usando comparação rasa
+    1. Fazem a interação nos reducers
+    2. Criam um novo objeto de estados a partir dos estados retornados por cada reducer
+- connect gera componentes que fazem comparação rasa com o estado root
+- Retornam o valor para a função mapStateToProps, verificando aqueles que precisam de uma operação de re-render.
+
+Porque não funciona com objetos mutáveis?
+```JS
+// State referenciado na store do Redux
+const state = {
+    user: {
+        contadorAcessos: 0,
+        nome: 'mateus'
+    }
+}
+
+// Função seletora
+const getUser = state => {
+    ++state.user.contadorAcessos; //mudando o estado
+    return state;
+}
+
+// mapStateToProps
+const mapStateToProps = state => ({
+    // O objeto retornado de getUser() é sempre
+    // o mesmo objeto, então esse componente referenciado
+    // nunca irá sofrer re-render, mesmo depois de alterado
+    userRecord: getUser(state)
+})
+
+const a = mapStateToProps(state);
+const b = mapStateToProps(state);
+
+a.userRecord === b.userRecord
+//> true
+```
+
+## Redux + Rest
+- Suponha um sistema de notificações ou um sistema de logging
+- Você precisa manter a sincronia, independente da tela onde estiver
+- Uma maneira de resolver fácil seria armazenar os dados do serviço no Redux
+
+### Redux Middlewares
+- Prove uma camada entre o disparo de uma ação e o momento que ela atinge o reducer
+- Utilizados para uma variedade de funções, entre elas chamadas de APIs de serviço
+
+### Entendendo Middlewares
+Imagine um sistema de log, onde toda action disparada em um sistema é impressa com o log na tela
+![](./readme-imgs/ex-middleware.png)
+
+- applyMiddleware do Redux:
+    - Só expõe um subconjunto da Store API para o middleware: dispatch e getState()
+    - Fica difícil saber se store.dispatch(action) vai realmente percorrer a cadeia do middleware de novo
+    - Opera em cima de createStore() ao invés da store em si
+
+```JS
+const logger = store => next => action => {
+    console.log('dispatching', action);
+    let result = next(action);
+    console.log('next state', store.getState());
+    return result;
+}
+
+const crashReporter = store => next => action => {
+    try {
+        return next(action);
+    } catch (err) {
+        console.error('Caught an exception!', err);
+        Raven.captureException(err, {
+            extra: {
+                action,
+                state: store.getState()
+            }
+        })
+        throw err
+    }
+}
+```
+---
+```js
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+
+const todoApp = combineReducers(reducers);
+const store = createStore(
+    todoApp,
+    //applyMiddleware() diz a createStore() como fazer o handling do middleware
+    applyMiddleware(logger, crashReporter);
+)
+```
+- Os mais usados são
+    - redux-thunk
+    - redux-saga
+
+### Redux Thunk
+Um thunk pe uma função que chama outra função
+```js
+function foo() {
+
+    return function bar() {
+
+    }
+}
+```
+Instalação `yarn add redux-thunk`

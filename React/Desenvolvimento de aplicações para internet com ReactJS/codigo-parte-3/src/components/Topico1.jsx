@@ -21,7 +21,7 @@ export const Topico1 = () => {
 
     // Hook equivalente a componentDidMount()
     useEffect(() => {
-        fetch('https://react-intermediario-dio.free.beeceptor.com/cientistas-brasileiras')
+        fetch('https://cat-fact.herokuapp.com/facts')
             .then(response => response.json())
             .then(data => {
                 setCientistas(data);
@@ -34,12 +34,12 @@ export const Topico1 = () => {
 
     return (
         <Topico1Block>
-        <h1>Cientistas Brasileiras</h1>
+        <h1>Cat Facts</h1>
         <ul>
             {cientistas.map((cientista, index) => (
                 <Item key={index}>
-                    <div><b>nome:</b> {cientista.name}</div>
-                    <div><b>area:</b> {cientista.area}</div>
+                    <div><b>nome:</b> {cientista.user}</div>
+                    <div><b>area:</b> {cientista.text}</div>
                 </Item>
             ))}
         </ul>
