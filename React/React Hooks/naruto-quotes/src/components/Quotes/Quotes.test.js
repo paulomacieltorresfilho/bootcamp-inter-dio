@@ -5,7 +5,7 @@ const quote = 'test quote';
 const speaker = 'random speaker';
 
 test('render received quote, speaker and a button' ,() => {
-    render(<Quotes quote={quote} speaker={speaker}/>);
+    render(<Quotes text={quote} speaker={speaker}/>);
 
     const quoteEl = screen.getByText(quote);
     const speakerEl = screen.getByText(`- ${speaker}`);

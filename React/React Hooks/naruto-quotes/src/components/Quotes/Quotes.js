@@ -2,10 +2,10 @@ import styled from 'styled-components';
 import { Button } from '../';
 import { string, func } from 'prop-types';
 
-export const Quotes = ({ quote, speaker, onUpdate }) => {
+export const Quotes = ({ text, speaker, onUpdate }) => {
   return (
     <Wrapper>
-      <Quote>{quote}</Quote>
+      <Quote>{text}</Quote>
       <Speaker>- {speaker}</Speaker>
       <Button onClick={onUpdate}>Quote No Jutsu</Button>
     </Wrapper>

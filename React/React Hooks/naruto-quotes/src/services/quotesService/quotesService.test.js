@@ -5,8 +5,8 @@ import { getQuote } from './quotesService';
 const response = { test: 'testing' };
 
 const server = setupServer(
-    rest.get('http://127.0.0.1:5000', (req, res, ctx) => {
-        return res(ctx.json(reponse));
+    rest.get(process.env.REACT_APP_API, (req, res, ctx) => {
+        return res(ctx.json(response));
     })
 )
 
